@@ -1,5 +1,6 @@
 package io.cloudjob.web;
 
+import io.cloudjob.config.AwsProperties;
 import io.cloudjob.service.JobApiService;
 import io.cloudjob.web.JobDtos.CreateJobRequest;
 import io.cloudjob.web.JobDtos.DlqRedriveResponse;
@@ -7,7 +8,9 @@ import io.cloudjob.web.JobDtos.DownloadUrlResponse;
 import io.cloudjob.web.JobDtos.JobResponse;
 import io.cloudjob.web.JobDtos.QueueStatsResponse;
 import jakarta.validation.Valid;
+import java.net.InetAddress;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +28,27 @@ import org.springframework.web.bind.annotation.RestController;
 public class JobController {
 
     private final JobApiService jobApiService;
+    private final AwsProperties awsProperties;
 
-    public JobController(JobApiService jobApiService) {
+    public JobController(JobApiService jobApiService, AwsProperties awsProperties) {
         this.jobApiService = jobApiService;
+        this.awsProperties = awsProperties;
+    }
+
+    @GetMapping("/info")
+    public Map<String, Object> info() {
+        String host;
+        try {
+            host = InetAddress.getLocalHost().getHostName();
+        } catch (Exception e) {
+            host = "unknown";
+        }
+        return Map.of(
+                "service", "cloud-job-platform",
+                "release", "v1.1.0-rolling-deploy",
+                "region", awsProperties.region(),
+                "host", host
+        );
     }
 
     @PostMapping("/jobs")
