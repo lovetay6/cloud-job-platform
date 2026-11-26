@@ -1,0 +1,27 @@
+# Java / Maven
+app/target/
+*.class
+*.jar
+*.war
+*.log
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.DS_Store
+
+# Terraform (never commit local state or secret vars)
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+override.tf
+override.tf.json
+.terraform.lock.hcl
+
+# Local env / credentials
+.env
+.env.*

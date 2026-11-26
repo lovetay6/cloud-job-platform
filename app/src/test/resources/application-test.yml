@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:cloudjob;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+
+app:
+  aws:
+    clients-enabled: false
+    region: ap-southeast-2
+    s3-bucket: test-bucket
+    sqs-queue-url: https://sqs.ap-southeast-2.amazonaws.com/000000000000/test-queue
+    sqs-dlq-url: https://sqs.ap-southeast-2.amazonaws.com/000000000000/test-dlq
+    presigned-url-expiry-seconds: 300
+    worker:
+      enabled: false
+      wait-time-seconds: 1
+      max-messages: 1
+      lease-seconds: 60
+      max-concurrency: 2
